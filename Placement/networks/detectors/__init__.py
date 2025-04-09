@@ -1,1 +1,0 @@
-from .monodtr_detector import monodtr
