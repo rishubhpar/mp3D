@@ -213,61 +213,30 @@ def read_one_split(cfg,index_names,data_root_dir,output_dict,data_split="trainin
 
 
 #main
-cfg=cfg_from_file("")#path for your config file
-print(cfg)
-time_display_inter=100# define the inverval displaying time consumed in loop
-data_root_dir=cfg.path.data_path#root path
-print("Root directory:",data_root_dir)
-calib_path=os.path.join(data_root_dir,"calib")
-list_calib=os.listdir(calib_path)
-N=len(list_calib)#7481
-print("Total list of images",N)
-output_dict={"calib":True,"image":True,"label":True,"velodyne":False}
-print("Sample information dictionary",output_dict)
-#names
-train_names,val_names=process_train_val_file(cfg)
-print("Number of train samples:",len(train_names))
-print("Number of validation samples:",len(val_names))
-read_one_split(cfg,train_names,data_root_dir,output_dict,'training',time_display_inter)
-#the shape of the anchor mean and anchor std is (16,3,6)==> [len(cfg.obj_types),len_level*len_scale,len_ratios]
+def main(config:str="config/config.py"):
+    cfg=cfg_from_file(config)#path for your config file
+    print(cfg)
+    time_display_inter=100# define the inverval displaying time consumed in loop
+    data_root_dir=cfg.path.data_path#root path
+    print("Root directory:",data_root_dir)
+    calib_path=os.path.join(data_root_dir,"calib")
+    list_calib=os.listdir(calib_path)
+    N=len(list_calib)#7481
+    print("Total list of images",N)
+    output_dict={"calib":True,"image":True,"label":True,"velodyne":False}
+    print("Sample information dictionary",output_dict)
+    #names
+    train_names,val_names=process_train_val_file(cfg)
+    print("Number of train samples:",len(train_names))
+    print("Number of validation samples:",len(val_names))
+    read_one_split(cfg,train_names,data_root_dir,output_dict,'training',time_display_inter)
+    #the shape of the anchor mean and anchor std is (16,3,6)==> [len(cfg.obj_types),len_level*len_scale,len_ratios]
 
-output_dict={"calib":True,"image":False,"label":True,"velodyne":False}
-read_one_split(cfg,val_names,data_root_dir,output_dict,"validation",time_display_inter)
-print("Preprocessing finished")
+    output_dict={"calib":True,"image":False,"label":True,"velodyne":False}
+    read_one_split(cfg,val_names,data_root_dir,output_dict,"validation",time_display_inter)
+    print("Preprocessing finished")
 
-       
+if __name__ == '__main__':
+    from fire import Fire
+    Fire(main)
 
-
-
-# def main(config:str="config/config.py"):
-#     cfg = cfg_from_file(config)
-#     torch.cuda.set_device(cfg.trainer.gpu)
-    
-#     time_display_inter = 100 # define the inverval displaying time consumed in loop
-#     data_root_dir = cfg.path.data_path # the base directory of training dataset
-#     calib_path = os.path.join(data_root_dir, 'calib') 
-#     list_calib = os.listdir(calib_path)
-#     N = len(list_calib)
-#     # no need for image, could be modified for extended use
-#     output_dict = {
-#                 "calib": True,
-#                 "image": True,
-#                 "label": True,
-#                 "velodyne": False,
-#             }
-
-#     train_names, val_names = process_train_val_file(cfg)
-#     read_one_split(cfg, train_names, data_root_dir, output_dict, 'training', time_display_inter)
-#     output_dict = {
-#                 "calib": True,
-#                 "image": False,
-#                 "label": True,
-#                 "velodyne": False,
-#             }
-#     read_one_split(cfg, val_names, data_root_dir, output_dict, 'validation', time_display_inter)
-
-#     print("Preprocessing finished")
-
-# if __name__ == '__main__':
-#     from fire import Fire
-#     Fire(main)

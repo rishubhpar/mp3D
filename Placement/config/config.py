@@ -135,16 +135,6 @@ data.train_augmentation = [
     edict(type_name='Normalize', keywords=edict(mean=data.augmentation.rgb_mean, stds=data.augmentation.rgb_std))
 ]
 
-# data.train_augmentation=[]
-
-#Use this augmentation only when performing validation on actual train images not inpainted images.
-# data.train_augmentation = [
-#     edict(type_name='ConvertToFloat'),
-#     edict(type_name='CropTop', keywords=edict(crop_top_index=data.augmentation.crop_top)),
-#     edict(type_name='Resize', keywords=edict(size=data.augmentation.cropSize)),
-#     edict(type_name='Normalize', keywords=edict(mean=data.augmentation.rgb_mean, stds=data.augmentation.rgb_std))
-# ]
-
 
 data.test_augmentation = [
     edict(type_name='ConvertToFloat'),

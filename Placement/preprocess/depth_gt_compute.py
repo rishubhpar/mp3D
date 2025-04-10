@@ -122,17 +122,21 @@ def compute_depth_for_split(cfg,index_names,data_root_dir,output_dict,data_split
     print("{} split finished precomputing depth".format(data_split))
 
 
+def main(config:str="config/config.py"):
+    cfg=cfg_from_file(config)#path for your config file
+    torch.cuda.set_device(cfg.trainer.gpu)
+    time_display_inter=100
+    data_root_dir=cfg.path.data_path
+    calib_path=os.path.join(data_root_dir,"calib")
+    list_calib=os.listdir(calib_path)
+    N=len(list_calib)
+    use_right_img=False
+    output_dict={"calib":True,"image":True,"image_3":use_right_img,"label":False,"velodyne":True}
+    train_names,val_names=process_train_val_file(cfg)
+    compute_depth_for_split(cfg,train_names,data_root_dir,output_dict,"training",time_display_inter)
+    print("Depth Preprocessing finished")
 
-cfg=cfg_from_file("")#path for your config file
-torch.cuda.set_device(cfg.trainer.gpu)
-time_display_inter=100
-data_root_dir=cfg.path.data_path
-calib_path=os.path.join(data_root_dir,"calib")
-list_calib=os.listdir(calib_path)
-N=len(list_calib)
-use_right_img=False
-output_dict={"calib":True,"image":True,"image_3":use_right_img,"label":False,"velodyne":True}
-train_names,val_names=process_train_val_file(cfg)
-compute_depth_for_split(cfg,train_names,data_root_dir,output_dict,"training",time_display_inter)
-print("Depth Preprocessing finished")
+if __name__ == '__main__':
+    from fire import Fire
+    Fire(main)
 
