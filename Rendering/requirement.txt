@@ -1,5 +1,6 @@
 numpy
 torch
+bpy
 torchvision
 pillow
 scikit-image
@@ -14,3 +15,4 @@ pyquaternion
 pandas
 detectron2
 csv
+argparse
